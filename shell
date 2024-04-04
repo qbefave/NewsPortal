@@ -1,0 +1,80 @@
+from newapp.models import *
+>>> u1=User.objects.create_user(username='USER1')
+>>> u2=User.objects.create_user(username='USER2') 
+>>> Author.objects.create(authorUser = u1)
+<Author: Author object (1)>
+>>> Author.objects.create(authorUser = u2) 
+<Author: Author object (2)>
+>>> Category.objects.create(name='DIY')
+<Category: Category object (1)>
+>>> Category.objects.create(name='Science')      
+<Category: Category object (2)>
+>>> Category.objects.create(name='IT')      
+<Category: Category object (3)>
+>>> Category.objects.create(name='Fun')
+<Category: Category object (4)>
+>>> author = Author.objects.get(id=1)
+>>> Post.objects.create(author=author, categoryType = 'NW', title = 'some title', text = 'some text')
+<Post: Post object (1)>
+>>> Post.objects.create(author=author, categoryType = 'AR', title = 'some title', text = 'some text') 
+<Post: Post object (2)>
+>>> Post.objects.create(author=author, categoryType = 'AR', title = 'some title1', text = 'some text1')
+<Post: Post object (3)>
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1)) 
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=2)) 
+>>> Post.objects.get(id=2).postCategory.add(Category.objects.get(id=3)) 
+>>> Post.objects.get(id=3).postCategory.add(Category.objects.get(id=4)) 
+>>> Comment.objects.create(commentPost = Post.objects.get(id=1),commentUser = Author.objects.get(id=1).authorUser,text='some text')
+<Comment: Comment object (1)>
+>>> Comment.objects.create(commentPost = Post.objects.get(id=1),commentUser = Author.objects.get(id=2).authorUser,text='some text1') 
+<Comment: Comment object (2)>
+>>> Comment.objects.create(commentPost = Post.objects.get(id=2),commentUser = Author.objects.get(id=2).authorUser,text='some text')  
+<Comment: Comment object (3)>
+>>> Comment.objects.create(commentPost = Post.objects.get(id=3),commentUser = Author.objects.get(id=1).authorUser,text='some text') 
+<Comment: Comment object (4)>
+>>> Comment.objects.get(id=1).like()                                                                       
+>>> Comment.objects.get(id=1).rating
+1
+>>> Comment.objects.get(id=1).dislike() 
+>>> Comment.objects.get(id=1).dislike()
+>>> Comment.objects.get(id=1).rating    
+-1
+>>> Post.objects.get(id=1).like()    
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=2).dislike()
+>>> Post.objects.get(id=2).dislike()
+>>> Post.objects.get(id=3).like()    
+>>> a = Author.objects.get(id=1)      
+>>> a
+<Author: Author object (1)>
+>>> a.authorRating
+5
+>>> a = Author.objects.get(id=2) 
+>>> a.authorRating                
+0
+>>> Comment.objects.get(id=3).like()    
+>>> Comment.objects.get(id=3).like()
+>>> a                                
+<Author: Author object (2)>
+>>> Post.objects.create(author=Author.objects.get(id=2)
+... )
+<Post: Post object (4)>
+>>> Post.objects.get(id=4).categoryType='NW'                                                               
+>>> Post.objects.get(id=4).title='text'     
+>>> Post.objects.get(id=4).text='text'  
+>>> Post.objects.get(id=4).like()
+>>> a.update_rating()
+>>> a.authorRating
+5
+>>> Post.objects.get(id=4).dislike() 
+>>> a.update_rating()                
+>>> a.authorRating                                      
+2
+>>> a=Author.objects.order_by('-authorRating')[:1]
+>>> for i in a:
+...     i.authorRating
+...     i.authorUser.username
+...
+5
+'USER1'
